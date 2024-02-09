@@ -7,12 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Media;
 
 namespace Space_Invaders_Game_C_
 {
     public partial class Form1 : Form
     {
-
+        SoundPlayer shootSound = new SoundPlayer(@"C:\Users\rapha\source\repos\Space-Invaders-Game-C#\Space-Invaders-Game-C#\Resources\laserShoot.wav");
         bool goLeft, goRight;
         int playerSpeed = 6;
         int enemySpeed = 3;
@@ -119,7 +120,7 @@ namespace Space_Invaders_Game_C_
                 }
             }
 
-            if (score > 12)
+            if (score > 10)
             {
                 enemySpeed = 9;
             }
@@ -156,6 +157,7 @@ namespace Space_Invaders_Game_C_
             if(e.KeyCode == Keys.Space && shooting == false)
             {
                 shooting = true;
+                shootSound.Play();
                 makeBullet("bullet");
             }
             if(e.KeyCode == Keys.Enter && isGameOver == true)
@@ -168,7 +170,7 @@ namespace Space_Invaders_Game_C_
 
         private void makeInvaders()
         {
-            invadersArray = new PictureBox[25];
+            invadersArray = new PictureBox[15];
 
             int left = 0;
 
@@ -207,6 +209,7 @@ namespace Space_Invaders_Game_C_
             isGameOver = true;
             gameTimer.Stop();
             txtScore.Text = "Score: " + score + " " + message;
+
         }
 
         private void removeAll()
