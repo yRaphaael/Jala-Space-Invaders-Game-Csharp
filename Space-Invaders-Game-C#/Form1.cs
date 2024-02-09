@@ -14,7 +14,8 @@ namespace Space_Invaders_Game_C_
     public partial class Form1 : Form
     {
         SoundPlayer shootSound = new SoundPlayer(@"C:\Users\rapha\source\repos\Space-Invaders-Game-C#\Space-Invaders-Game-C#\Resources\laserShoot.wav");
-        bool goLeft, goRight;
+        SoundPlayer spaceShip = new SoundPlayer(@"C:\Users\rapha\source\repos\Space-Invaders-Game-C#\Space-Invaders-Game-C#\Resources\spaceship-movement.wav");
+        bool goLeft, goRight, goUp, goDown;
         int playerSpeed = 6;
         int enemySpeed = 3;
         int score = 0;
@@ -43,14 +44,28 @@ namespace Space_Invaders_Game_C_
 
         private void mainGameTimerEvent(object sender, EventArgs e)
         {
+
             txtScore.Text = "Score: " + score;
-            if (goLeft)
+
+            if (goLeft && player.Left > 0)
             {
                 player.Left -= playerSpeed;
+                spaceShip.Play();
             }
-            if (goRight)
+            if (goRight && player.Left + player.Width < ClientSize.Width)
             {
                 player.Left += playerSpeed;
+                spaceShip.Play();
+            }
+            if (goUp && player.Top > 0)
+            {
+                player.Top -= playerSpeed;
+                spaceShip.Play();
+            }
+            if (goDown && player.Top + player.Height < ClientSize.Height)
+            {
+                player.Top += playerSpeed;
+                spaceShip.Play();
             }
 
             enemyBulletTimer -= 10;
@@ -134,13 +149,21 @@ namespace Space_Invaders_Game_C_
 
         private void keyisdown(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.Left)
+            if (e.KeyCode == Keys.Left)
             {
                 goLeft = true;
             }
-            if(e.KeyCode == Keys.Right)
+            if (e.KeyCode == Keys.Right)
             {
                 goRight = true;
+            }
+            if (e.KeyCode == Keys.Up)
+            {
+                goUp = true;
+            }
+            if (e.KeyCode == Keys.Down)
+            {
+                goDown = true;
             }
         }
 
@@ -154,17 +177,24 @@ namespace Space_Invaders_Game_C_
             {
                 goRight = false;
             }
-            if(e.KeyCode == Keys.Space && shooting == false)
+            if (e.KeyCode == Keys.Up)
+            {
+                goUp = false;
+            }
+            if (e.KeyCode == Keys.Down)
+            {
+                goDown = false;
+            }
+            if (e.KeyCode == Keys.Space && shooting == false)
             {
                 shooting = true;
                 shootSound.Play();
                 makeBullet("bullet");
             }
-            if(e.KeyCode == Keys.Enter && isGameOver == true)
+            if (e.KeyCode == Keys.Enter && isGameOver == true)
             {
                 removeAll();
                 gameSetup();
-
             }
         }
 
